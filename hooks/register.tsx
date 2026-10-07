@@ -263,7 +263,7 @@ function paneName(pane: OttyPane): string {
   return title || pane.agent || pane.id
 }
 
-async function team($: EngineInterface, cfg: ProjectConfig, root: string, self: string | undefined, homeDir: string, dirs: string[]): Promise<WpAgent[] | null> {
+async function teamPanes($: EngineInterface, cfg: ProjectConfig, root: string, self: string | undefined, homeDir: string, dirs: string[]): Promise<WpAgent[] | null> {
   if (cfg.team === false || !self) return null
   const stdout = await run($, ['otty', 'pane', 'list', '--json'], root, 4000)
   if (!stdout) return null
@@ -365,7 +365,7 @@ async function collect($: EngineInterface, homeDir: string, self: string | undef
     counters($, cfg, root, problems),
     beads($, cfg, root, now),
     github($, cfg, root, now),
-    team($, cfg, root, self, homeDir, dirs),
+    teamPanes($, cfg, root, self, homeDir, dirs),
     locks($, cfg, root, homeDir, dirs),
   ])
 
