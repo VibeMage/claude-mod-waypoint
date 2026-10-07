@@ -1,0 +1,61 @@
+{
+  "name": "waypoint",
+  "version": "0.1.0",
+  "description": "Project progress in one row above the Claude Code prompt: your /goal, checklists, roadmap, counters, beads epics, GitHub milestones, the agents working beside you and who holds a lock",
+  "author": {
+    "name": "VibeMage",
+    "url": "https://github.com/VibeMage"
+  },
+  "homepage": "https://github.com/VibeMage/claude-mod-waypoint",
+  "repository": "https://github.com/VibeMage/claude-mod-waypoint",
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "progress",
+    "goal",
+    "roadmap",
+    "todo",
+    "checklist",
+    "beads",
+    "milestone",
+    "agents",
+    "otty"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "description": "auto (Chinese when LANG or the project's text is Chinese, else English), en or zh",
+      "default": "auto",
+      "options": [
+        "auto",
+        "en",
+        "zh"
+      ]
+    },
+    "style": {
+      "type": "string",
+      "title": "Style",
+      "description": "capsule: each item on a soft rounded fill; plain: items separated by dots",
+      "default": "capsule",
+      "options": [
+        "capsule",
+        "plain"
+      ]
+    },
+    "refreshSeconds": {
+      "type": "number",
+      "title": "Refresh every (s)",
+      "description": "How often files, panes and locks are re-read (5 to 600); beads and GitHub at most every 5 minutes",
+      "default": 20
+    },
+    "showTeam": {
+      "type": "boolean",
+      "title": "Show agents",
+      "description": "The Claude Code and Codex panes working on the same project (needs Otty)",
+      "default": true
+    }
+  },
+  "privacyPolicyUrl": "https://github.com/VibeMage/claude-mod-waypoint/blob/main/PRIVACY.md"
+}

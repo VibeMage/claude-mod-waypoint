@@ -1,0 +1,17 @@
+{
+  "name": "claude-mod-waypoint",
+  "owner": { "name": "VibeMage" },
+  "metadata": {
+    "description": "waypoint: project progress in one row above the Claude Code prompt, written as a Claude Code mod",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "waypoint",
+      "source": "./",
+      "description": "Your /goal, checklists, roadmap phases, counters, beads epics, GitHub milestones, agent panes and locks in one row above the prompt. Cupertino colours.",
+      "category": "productivity",
+      "tags": ["mod", "progress", "goal", "roadmap", "todo", "checklist", "beads", "milestone", "agents"]
+    }
+  ]
+}

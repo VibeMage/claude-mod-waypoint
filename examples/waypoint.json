@@ -1,0 +1,17 @@
+{
+  "name": "My App",
+  "checklists": [
+    { "file": "docs/TODO.md", "marker": "current sprint" },
+    { "file": "docs/launch-checklist.md", "label": "Launch" }
+  ],
+  "roadmap": { "file": "docs/ROADMAP.md", "current": "Beta" },
+  "counters": [
+    { "label": "Screens", "done": 12, "total": 30 },
+    { "label": "Tests", "command": ["sh", "-c", "echo \"$(grep -c PASS out.log)/$(grep -c TEST out.log)\""] }
+  ],
+  "beads": { "epic": "app-12" },
+  "github": { "milestone": "v1.0" },
+  "team": { "panes": { "p_1a2b3c_4": "Codex A", "p_1a2b3c_5": "Reviewer" } },
+  "locks": [{ "path": ".local/deploy.lock", "label": "deploy", "worktrees": true }],
+  "panes": ["p_1a2b3c_3"]
+}
