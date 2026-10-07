@@ -86,6 +86,8 @@ waypoint 是一个在 Claude Code mod 沙盒里运行的 TypeScript 模块，没
 
 - **读取**：配置里指定的 Markdown 文件和锁文件（没有配置时读 `TODO.md` / `ROADMAP.md`）、配置文件本身、当前会话记录（只看 `/goal` 记录和任务工具调用）、Claude Code 的 `theme` 设置。
 - **运行**：每次刷新运行 `git worktree list`，用 `grep` 在会话记录里找 `/goal` 记录；有 Otty 时运行 `otty pane list`，并对显示的 agent 窗格运行 `otty pane capture --lines 12`，用来区分忙、卡住和待批。最多每 5 分钟一次：开启 beads 时运行 `bd epic status`，配置了 GitHub 时运行 `gh api` 读里程碑（唯一的网络请求，由你自己的 `gh` 发出）。另外还有你给计数配置的 `command`。
+- **钩子**：`tool.call` 只挂在 TodoWrite、TaskCreate 和 TaskUpdate 上，用来读取 Claude 写下的任务清单，调用本身原样放行。另外挂了 `session.start`（注册 `/waypoint` 并启动定时刷新）、`turn.complete`（每轮结束后刷新）、`/clear` 时的 `session.end`（清掉目标和任务），并用 `ui.render` 画出那一行和详情窗格。
+- 会话记录不在常规路径时，每个会话运行一次 `find`，在 `~/.claude/projects` 下找到它。
 - **从不**往其他窗格输入、修改任务跟踪器或编辑文件。
 
 见 [PRIVACY.md](PRIVACY.md)。

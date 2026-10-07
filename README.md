@@ -86,6 +86,8 @@ waypoint is a TypeScript module that Claude Code runs in its mod sandbox. It has
 
 - **Reads** the Markdown files and lock files your config names (or `TODO.md` / `ROADMAP.md` when there is none), its config files, the session's transcript (only the `/goal` records and todo tool calls), and your Claude Code `theme` setting.
 - **Runs**, every refresh: `git worktree list`, `grep` over the session transcript for `/goal` records, and with Otty, `otty pane list` and `otty pane capture --lines 12` on the agent panes it shows, to tell busy, stuck and waiting apart. Every 5 minutes at most: `bd epic status` when beads is on, `gh api` for milestones when GitHub is configured (the one network request, made by your own `gh`). Plus any `command` you configure for a counter.
+- **Hooks** `tool.call` only for TodoWrite, TaskCreate and TaskUpdate, to read the todo list as Claude writes it; the calls pass through unchanged. It also hooks `session.start` (to register `/waypoint` and start the refresh timer), `turn.complete` (to refresh after each turn), `session.end` on `/clear` (to forget the goal and todos), and draws the band and the pane with `ui.render`.
+- **Runs** `find` once per session, only when the transcript is not at its usual path, to locate it under `~/.claude/projects`.
 - **Never** types into another pane, changes a tracker, or edits a file.
 
 See [PRIVACY.md](PRIVACY.md).

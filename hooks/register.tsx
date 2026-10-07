@@ -81,10 +81,6 @@ async function run($: EngineInterface, argv: string[], cwd: string, timeoutMs = 
   }
 }
 
-async function home($: EngineInterface): Promise<string> {
-  return (await $.env.get('HOME')) ?? ''
-}
-
 // The project's own `.claude/waypoint.json`, else the entry of `~/.claude/waypoint.json` whose paths hold the session
 async function resolveConfig($: EngineInterface, homeDir: string): Promise<Resolved> {
   const problems: string[] = []
@@ -267,14 +263,7 @@ function paneName(pane: OttyPane): string {
   return title || pane.agent || pane.id
 }
 
-async function team(
-  $: EngineInterface,
-  cfg: ProjectConfig,
-  root: string,
-  self: string | undefined,
-  homeDir: string,
-  dirs: string[],
-): Promise<WpAgent[] | null> {
+async function team($: EngineInterface, cfg: ProjectConfig, root: string, self: string | undefined, homeDir: string, dirs: string[]): Promise<WpAgent[] | null> {
   if (cfg.team === false || !self) return null
   const stdout = await run($, ['otty', 'pane', 'list', '--json'], root, 4000)
   if (!stdout) return null
@@ -665,7 +654,7 @@ export const register: Register = (on, options) => {
       description: 'Project progress: open or close the detail pane; `refresh` to re-read now, `config` for the config file',
       argumentHint: '[refresh|config]',
     })
-    homeDir = await home($)
+    homeDir = (await $.env.get('HOME')) ?? ''
     const pane = await $.env.get('OTTY_PANE_ID')
     self = pane ? normalizePane(pane) : undefined
     lang = (await $.env.get('LANG')) ?? ''

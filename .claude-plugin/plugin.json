@@ -57,5 +57,6 @@
       "default": true
     }
   },
-  "privacyPolicyUrl": "https://github.com/VibeMage/claude-mod-waypoint/blob/main/PRIVACY.md"
+  "privacyPolicyUrl": "https://github.com/VibeMage/claude-mod-waypoint/blob/main/PRIVACY.md",
+  "icon": "./.claude-plugin/icon.png"
 }
