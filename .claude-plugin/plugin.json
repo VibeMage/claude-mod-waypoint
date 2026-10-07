@@ -1,6 +1,6 @@
 {
   "name": "waypoint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Project progress in one row above the Claude Code prompt: your /goal, checklists, roadmap, counters, beads epics, GitHub milestones, the agents working beside you and who holds a lock",
   "author": {
     "name": "VibeMage",

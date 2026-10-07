@@ -1,6 +1,6 @@
 // Pure parsers and layout helpers: no `$`, so the tests run them directly
 
-import type { WpAgentState, WpPhase, WpTodo } from '../types'
+import type { WpAgentState, WpGoal, WpPhase, WpTodo } from '../types'
 
 export type Heading = { level: number; text: string; line: number }
 
@@ -46,19 +46,19 @@ export function sections(markdown: string): Section[] {
   const lines = markdown.split('\n')
   const hs = headings(markdown)
   const out: Section[] = []
-  hs.forEach((h, i) => {
+  hs.forEach((head, i) => {
     const end = hs[i + 1]?.line ?? lines.length
     const items: Section['items'] = []
     let isFenced = false
-    for (const line of lines.slice(h.line + 1, end)) {
+    for (const line of lines.slice(head.line + 1, end)) {
       if (/^\s*(```|~~~)/.test(line)) isFenced = !isFenced
       if (isFenced) continue
       const m = line.match(CHECKBOX)
       if (m) items.push({ text: stripMarkdown(m[2]!), isDone: m[1] !== ' ' })
     }
     out.push({
-      heading: stripMarkdown(h.text),
-      label: sectionLabel(h.text),
+      heading: stripMarkdown(head.text),
+      label: sectionLabel(head.text),
       done: items.filter(it => it.isDone).length,
       total: items.length,
       items,
@@ -311,4 +311,34 @@ export function hasCjk(text: string): boolean {
 
 export function normalizePane(id: string): string {
   return id.startsWith('p_') ? id : `p_${id}`
+}
+
+// The goal as the newest transcript line about it leaves it: a goal_status record, `/goal <condition>`, or a
+// clear (null). Lines are the transcript's JSONL rows that mention a goal, oldest first
+export function latestGoal(lines: string[]): WpGoal | null {
+  // Newest first; a line that merely quotes these strings (a tool result) is passed over
+  for (const line of [...lines].reverse()) {
+    let row: {
+      type?: string
+      content?: unknown
+      attachment?: { type?: string; condition?: string; met?: boolean; reason?: string }
+      message?: { content?: unknown }
+    }
+    try {
+      row = JSON.parse(line)
+    } catch {
+      continue
+    }
+    if (row.attachment?.type === 'goal_status' && row.attachment.condition) {
+      return { condition: row.attachment.condition, isMet: row.attachment.met === true, reason: row.attachment.reason }
+    }
+    // The command as typed is a user row; `/goal clear` is kept as a local-command notice, its text at the top
+    const raw = row.type === 'user' ? row.message?.content : row.type === 'system' ? row.content : undefined
+    const content = typeof raw === 'string' ? raw : ''
+    if (!content.trimStart().startsWith('<command-name>/goal</command-name>')) continue
+    const goal = goalFromText(content)
+    return goal ? { condition: goal, isMet: false } : null
+  }
+
+  return null
 }

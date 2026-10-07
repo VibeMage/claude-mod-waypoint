@@ -6,6 +6,7 @@ import {
   displayWidth,
   fitSegments,
   goalFromText,
+  latestGoal,
   paneState,
   phaseShort,
   pickSection,
@@ -158,4 +159,21 @@ test('the band shows the todo progress as one row on terminal and desktop', asyn
     expect(await ui.find({ type: 'Text', text: / Testing mod/ })).toBeDefined()
     await ui.unmount()
   }
+})
+
+test('the newest goal record wins: set, met, then cleared', async () => {
+  const set = JSON.stringify({
+    type: 'user',
+    message: { content: '<command-name>/goal</command-name>\n<command-args>Ship beta</command-args>' },
+  })
+  const status = (met: boolean) => JSON.stringify({ type: 'attachment', attachment: { type: 'goal_status', met, condition: 'Ship beta', reason: 'two left' } })
+  const clear = JSON.stringify({ type: 'system', subtype: 'local_command', content: '<command-name>/goal</command-name>\n<command-args>clear</command-args>' })
+  const quoted = JSON.stringify({ type: 'user', message: { content: [{ type: 'tool_result', content: '<command-name>/goal</command-name>' }] } })
+
+  expect(latestGoal([set])).toEqual({ condition: 'Ship beta', isMet: false })
+  expect(latestGoal([set, status(false)])).toEqual({ condition: 'Ship beta', isMet: false, reason: 'two left' })
+  expect(latestGoal([set, status(true)])?.isMet).toBe(true)
+  expect(latestGoal([set, status(true), clear])).toBeNull()
+  expect(latestGoal([set, quoted])?.condition).toBe('Ship beta')
+  expect(latestGoal([])).toBeNull()
 })

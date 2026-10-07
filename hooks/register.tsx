@@ -10,9 +10,9 @@ import {
   currentPhase,
   displayWidth,
   fitSegments,
-  goalFromText,
   hasCjk,
   isUnder,
+  latestGoal,
   normalizePane,
   paneState,
   phaseShort,
@@ -351,28 +351,7 @@ async function readGoal($: EngineInterface, transcript: string | undefined): Pro
   if (!transcript) return undefined
   const stdout = await run($, ['grep', '-E', '"goal_status"|<command-name>/goal<', transcript], '/', 4000)
   if (stdout === null) return null
-  // Newest first; a line that merely quotes these strings (a tool result) is passed over
-  for (const line of stdout.trimEnd().split('\n').reverse()) {
-    let row: {
-      type?: string
-      attachment?: { type?: string; condition?: string; met?: boolean; reason?: string }
-      message?: { content?: unknown }
-    }
-    try {
-      row = JSON.parse(line)
-    } catch {
-      continue
-    }
-    if (row.attachment?.type === 'goal_status' && row.attachment.condition) {
-      return { condition: row.attachment.condition, isMet: row.attachment.met === true, reason: row.attachment.reason }
-    }
-    const content = row.type === 'user' && typeof row.message?.content === 'string' ? row.message.content : ''
-    if (!content.trimStart().startsWith('<command-name>/goal</command-name>')) continue
-    const goal = goalFromText(content)
-    return goal ? { condition: goal, isMet: false } : null
-  }
-
-  return null
+  return latestGoal(stdout.split('\n'))
 }
 
 // The session's transcript file: `<config>/projects/<cwd with every non-alphanumeric as ->/<session id>.jsonl`

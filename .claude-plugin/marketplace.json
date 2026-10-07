@@ -3,7 +3,7 @@
   "owner": { "name": "VibeMage" },
   "metadata": {
     "description": "waypoint: project progress in one row above the Claude Code prompt, written as a Claude Code mod",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {

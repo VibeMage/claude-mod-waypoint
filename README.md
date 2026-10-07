@@ -4,12 +4,11 @@ English | [简体中文](README.zh-CN.md)
 
 Where your project stands, in one row above the Claude Code prompt. Written as a [Claude Code mod](https://code.claude.com/docs/en/plugins/mods/overview).
 
-```
- ◎ Ship the beta 3/7   Sprint 12 ▰▰▰▱▱ 6/10   Screens 12/30   ●●◉○ Beta   agents 4 busy2 stuck1   lock codex-A
-❯ █
-```
+![waypoint above the Claude Code prompt](docs/band.png)
 
 Every item is a soft capsule in Apple system colours, light or dark with your Claude Code theme. When the row is short, the least important capsules give way first. `/waypoint` opens a pane with the details: open checklist items, every phase, each agent and what it holds.
+
+<img src="docs/pane.png" alt="The /waypoint pane" width="384">
 
 > **Requires Claude Code 2.1.289 or newer.** Mods are an early-access API that may change between releases. If waypoint stops drawing after an update, please open an issue.
 

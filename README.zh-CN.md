@@ -4,12 +4,11 @@
 
 在 Claude Code 输入框上方用一行显示项目进度。以 [Claude Code mod](https://code.claude.com/docs/en/plugins/mods/overview) 形式编写。
 
-```
- ◎ 发布 Beta 3/7   第 12 迭代 ▰▰▰▱▱ 6/10   页面 12/30   ●●◉○ Beta   团队 4 忙2 卡1   锁 codex-A
-❯ █
-```
+![输入框上方的 waypoint](docs/band.png)
 
 每一项是一个苹果系统色的浅色胶囊，跟随 Claude Code 的明暗主题。宽度不够时，最不重要的胶囊先让位。`/waypoint` 打开详情窗格：未完成的清单项、全部阶段、每个 agent 的状态和它持有的锁。
+
+<img src="docs/pane.png" alt="/waypoint 详情窗格" width="384">
 
 > **需要 Claude Code 2.1.289 或更新版本。** mod 是早期访问 API，版本之间可能变化。如果更新后不显示了，请提 issue。
 
